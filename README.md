@@ -1,30 +1,58 @@
-# Home Assistant Bun HTTP Server Add-on
+# HassForge Incoming REST Integration
 
-This add-on provides a fast HTTP server powered by Bun for Home Assistant.
+A Home Assistant integration that creates a configurable webhook endpoint to receive REST requests and store their data in a sensor entity.
 
 ## Features
 
-- Lightweight and fast HTTP server
-- Built with Bun runtime
-- Configurable port
+- Creates a webhook endpoint with a customizable suffix for better organization
+- Configurable allowed HTTP methods (GET, POST, OPTIONS, DELETE)
+- Stores the latest request data in a sensor entity including:
+  - Request content
+  - HTTP method used
+  - Headers
+  - Query parameters
+  - Request path
+  - Content type
+  - Timestamp
 
 ## Installation
 
-1. Add this repository to your Home Assistant Add-on Store
-2. Install the "Bun HTTP Server" add-on
-3. Start the add-on
+1. Add this repository to HACS as a custom repository
+2. Install the "HassForge Incoming REST" integration
+3. Restart Home Assistant
+4. Add the integration through the Home Assistant UI (Settings -> Devices & Services -> Add Integration)
 
 ## Configuration
 
-The add-on can be configured through the Home Assistant UI:
+When adding the integration, you'll need to configure:
 
-```yaml
-port: 3000  # The port the server will listen on
-```
+1. Name - A name for your webhook endpoint (defaults to "HassForge Incoming REST")
+2. Webhook Suffix - A custom suffix for your webhook URL (e.g., "my-device" will create a URL ending in "/my-device")
+3. Allowed Methods - Select which HTTP methods are allowed (GET, POST, OPTIONS, DELETE)
 
 ## Usage
 
-Once started, the server will be available at `http://your-home-assistant:3000`
+Once configured, the integration will:
+
+1. Create a webhook URL in the format: `https://your-home-assistant/api/webhook/<webhook-id>/<webhook-suffix>`
+2. Create a sensor entity that updates whenever the webhook receives a request
+3. Store the latest request data in the sensor's attributes
+
+The sensor's state will contain the request content (for POST requests) or indicate the request method for other types of requests.
+
+### Example Sensor Data
+
+The sensor will store the following attributes for each request:
+```yaml
+state: <request content or method>
+attributes:
+  method: POST
+  headers: {...}
+  query_params: {...}
+  path: /api/webhook/xxx/my-device
+  content_type: application/json
+  timestamp: 2025-02-01T13:36:15
+```
 
 ## Support
 
