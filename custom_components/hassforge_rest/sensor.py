@@ -18,7 +18,9 @@ from .const import (
     ATTR_PATH,
     ATTR_QUERY_PARAMS,
     ATTR_TIMESTAMP,
+    ATTR_WEBHOOK_URL,
     CONF_NAME,
+    CONF_WEBHOOK_URL,
     DOMAIN,
 )
 
@@ -32,12 +34,8 @@ async def async_setup_entry(
 ) -> None:
     """Set up the sensor platform."""
     name = config_entry.data[CONF_NAME]
-    webhook_sensor = WebhookSensor(
-        hass,
-        config_entry.entry_id,
-        name,
-    )
-    async_add_entities([webhook_sensor], True)
+    sensor = WebhookSensor(hass, config_entry.entry_id, name)
+    async_add_entities([sensor], True)
 
 
 class WebhookSensor(SensorEntity):
@@ -62,7 +60,15 @@ class WebhookSensor(SensorEntity):
             ATTR_PATH: None,
             ATTR_CONTENT_TYPE: None,
             ATTR_TIMESTAMP: None,
+            ATTR_WEBHOOK_URL: None,
         }
+
+    async def async_added_to_hass(self) -> None:
+        """Run when entity about to be added to hass."""
+        if self._entry_id in self.hass.data[DOMAIN]:
+            self._attr_extra_state_attributes[ATTR_WEBHOOK_URL] = (
+                self.hass.data[DOMAIN][self._entry_id][CONF_WEBHOOK_URL]
+            )
 
     def update_from_webhook(
         self,
