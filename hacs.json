@@ -1,0 +1,5 @@
+{
+    "name": "HassForge Incoming REST",
+    "render_readme": true,
+    "homeassistant": "2023.12.0"
+}

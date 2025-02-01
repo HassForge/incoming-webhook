@@ -1,0 +1,14 @@
+{
+  "domain": "hassforge_rest",
+  "name": "HassForge Incoming REST",
+  "codeowners": ["@HassForge"],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/HassForge/incoming-rest",
+  "homekit": {},
+  "iot_class": "local_push",
+  "requirements": [],
+  "ssdp": [],
+  "version": "1.0.0",
+  "zeroconf": []
+}

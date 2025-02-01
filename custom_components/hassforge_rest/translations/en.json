@@ -1,0 +1,15 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "title": "Set up HassForge Incoming REST",
+                "description": "Set up a webhook endpoint for receiving REST calls",
+                "data": {
+                    "name": "Name",
+                    "webhook_suffix": "Webhook URL Suffix (e.g., 'my-endpoint')",
+                    "allowed_methods": "Allowed HTTP Methods"
+                }
+            }
+        }
+    }
+}
